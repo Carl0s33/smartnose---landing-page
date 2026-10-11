@@ -3,15 +3,46 @@ interface EventRecord {
   title: string
   category: string
   description: string
-  featured?: boolean
+  layout?: 'wide' | 'compact'
 }
 
-// Generic previews only; replace their visuals and example copy with verified project material.
+// Conteúdo demonstrativo até que fotos e registros reais sejam definidos.
 const EVENT_RECORDS: EventRecord[] = [
-  { visual: 'events-record__visual--lab', title: 'Apresentação científica', category: 'Pesquisa em movimento', description: 'Exemplo de legenda para uma participação acadêmica do projeto.', featured: true },
-  { visual: 'events-record__visual--prototype', title: 'Demonstração do protótipo', category: 'Desenvolvimento', description: 'Exemplo de registro do desenvolvimento do SmartNose.' },
-  { visual: 'events-record__visual--exchange', title: 'Compartilhamento de conhecimento', category: 'Divulgação científica', description: 'Exemplo de atividade de troca com a comunidade.' },
-  { visual: 'events-record__visual--team', title: 'Pesquisa em equipe', category: 'Comunidade acadêmica', description: 'Exemplo de legenda para um registro da equipe.' },
+  {
+    visual: 'events-record__visual--lab',
+    title: 'Ciência em exposição',
+    category: 'Mostra científica',
+    description: 'O SmartNose apresentado a novas ideias, pessoas e possibilidades para a pesquisa.',
+    layout: 'wide',
+  },
+  {
+    visual: 'events-record__visual--prototype',
+    title: 'Tecnologia em demonstração',
+    category: 'Demonstração',
+    description: 'Uma visão de perto do protótipo e de como os sensores acompanham o processo.',
+    layout: 'wide',
+  },
+  {
+    visual: 'events-record__visual--exchange',
+    title: 'Ideias que circulam',
+    category: 'Divulgação científica',
+    description: 'Conversas e descobertas que aproximam a pesquisa da comunidade.',
+    layout: 'wide',
+  },
+  {
+    visual: 'events-record__visual--team',
+    title: 'Pesquisa em equipe',
+    category: 'Comunidade acadêmica',
+    description: 'Pessoas e conhecimentos diferentes trabalhando na mesma direção.',
+    layout: 'compact',
+  },
+  {
+    visual: 'events-record__visual--workshop',
+    title: 'Aprender fazendo',
+    category: 'Atividade prática',
+    description: 'Experimentos e trocas que transformam curiosidade em conhecimento.',
+    layout: 'compact',
+  },
 ]
 
 export default function EventosSection() {
@@ -28,21 +59,21 @@ export default function EventosSection() {
             <h2 id="eventos-title" className="events-title">Da pesquisa à comunidade</h2>
           </div>
           <p className="events-intro">
-            O SmartNose em eventos, apresentações científicas e iniciativas de divulgação do conhecimento.
+            Um olhar sobre encontros, apresentações e experiências que levam o SmartNose além do laboratório.
           </p>
         </header>
 
         <p className="events-demo-note" role="note">
-          Prévia de layout: imagens e legendas demonstrativas, a substituir por registros reais do projeto.
+          Conteúdo demonstrativo: títulos, descrições e imagens serão substituídos por registros reais do projeto.
         </p>
         <div className="events-grid">
           {EVENT_RECORDS.map((record) => (
             <article
-              className={`events-record${record.featured ? ' events-record--featured' : ''}`}
+              className={`events-record events-record--${record.layout}`}
               key={record.title}
             >
               <div className={`events-record__visual ${record.visual}`} aria-hidden="true">
-                <span className="events-record__mock-label">Imagem demonstrativa</span>
+                <span className="events-record__mock-label">Registro demonstrativo</span>
               </div>
               <div className="events-record__caption">
                 <p className="events-record__category">{record.category}</p>
