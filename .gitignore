@@ -11,10 +11,10 @@ node_modules
 dist
 dist-ssr
 *.local
-/.claude
-/.codex
-/.cursor
-/.impeccable
+.claude
+.codex
+.cursor
+.impeccable
 
 # Editor directories and files
 .vscode/*
