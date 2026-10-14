@@ -107,7 +107,7 @@ export default function EventosSection() {
                   aria-label={`Mostrar foto ${index + 1} de ${event.photos.length}: ${item.alt}`}
                   aria-pressed={index === photoIndex}
                 >
-                  <img src={item.src} alt="" loading="lazy" />
+                  <img src={item.src} alt="" loading="eager" />
                 </button>
               ))}
             </div>

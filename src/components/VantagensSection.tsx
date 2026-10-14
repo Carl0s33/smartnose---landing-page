@@ -262,7 +262,7 @@ function DashboardDemonstration() {
                     src={slide.image} 
                     alt={slide.alt}
                     className="h-full w-full object-contain"
-                    loading={idx === 0 ? 'eager' : 'lazy'}
+                    loading="eager"
                     decoding="async"
                   />
                 </div>

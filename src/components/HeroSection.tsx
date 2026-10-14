@@ -51,15 +51,15 @@ export default function HeroSection() {
       />
 
       {/* ── Content Grid ─────────────────────────────────────────────── */}
-      <div className="relative z-10 w-full max-w-[1280px] mx-auto px-8 py-16">
-        <div className="grid grid-cols-12 gap-12 items-center">
+      <div className="relative z-10 w-full max-w-[1280px] mx-auto px-6 py-12 sm:px-8 sm:py-16">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 xl:gap-12 items-center">
 
           {/* ── LEFT COLUMN — Copy ──────────────────────────────────── */}
-          <div className="col-span-12 lg:col-span-6 flex flex-col items-start gap-0">
+          <div className="col-span-1 lg:col-span-6 flex flex-col items-start gap-0">
 
             {/* H1 — Headline */}
             <div className="opacity-initial animate-fade-up">
-              <h1 className="font-jakarta font-extrabold text-[52px] xl:text-[60px] tracking-[-1.5px] text-white">
+              <h1 className="font-jakarta font-extrabold text-[clamp(2.35rem,4.6vw,3.75rem)] tracking-[-0.045em] text-white">
                 {/* Line 1 */}
                 <span className="block" style={{ lineHeight: '1.1' }}>Monitore a</span>
 
@@ -138,7 +138,7 @@ export default function HeroSection() {
           </div>
 
           {/* ── RIGHT COLUMN — Hero Image ────────────────────────────── */}
-          <div className="col-span-12 lg:col-span-6 opacity-initial animate-scale-in">
+          <div className="col-span-1 lg:col-span-6 opacity-initial animate-scale-in">
             {/* Electric frame wrapper */}
             <div
               className="relative rounded-xl p-[6px]"
