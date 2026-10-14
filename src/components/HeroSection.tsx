@@ -1,6 +1,29 @@
-import { MessageSquare, ChevronDown } from 'lucide-react'
+import { useEffect, useRef, useState } from 'react'
+import { MessageSquare, ChevronDown, Pause, Play } from 'lucide-react'
+import heroVideo from '../img/hero_video.mp4'
+import heroPoster from '../img/img_prototipo.jpg'
 
 export default function HeroSection() {
+  const videoRef = useRef<HTMLVideoElement>(null)
+  const [isVideoPlaying, setIsVideoPlaying] = useState(false)
+
+  useEffect(() => {
+    const video = videoRef.current
+    if (!video || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+    void video.play().then(() => setIsVideoPlaying(true)).catch(() => setIsVideoPlaying(false))
+  }, [])
+
+  function toggleVideo() {
+    const video = videoRef.current
+    if (!video) return
+    if (video.paused) {
+      void video.play().then(() => setIsVideoPlaying(true)).catch(() => setIsVideoPlaying(false))
+    } else {
+      video.pause()
+      setIsVideoPlaying(false)
+    }
+  }
+
   return (
     <section
       id="hero"
@@ -128,79 +151,28 @@ export default function HeroSection() {
             >
               {/* Inner card */}
               <div className="relative rounded-[8px] overflow-hidden bg-black border border-white/10">
-                {/* Image placeholder */}
-                <div className="relative w-full aspect-[16/9] bg-gradient-to-br from-[#0d1117] to-[#111827] flex items-center justify-center">
-                  {/* Subtle grid overlay */}
-                  <div
-                    className="absolute inset-0 opacity-[0.06]"
-                    style={{
-                      backgroundImage:
-                        'linear-gradient(rgba(0,207,170,0.4) 1px, transparent 1px), linear-gradient(90deg, rgba(0,207,170,0.4) 1px, transparent 1px)',
-                      backgroundSize: '48px 48px',
-                    }}
+                <div className="hero-video-frame">
+                  <video
+                    ref={videoRef}
+                    className="hero-video"
+                    src={heroVideo}
+                    loop
+                    muted
+                    playsInline
+                    preload="metadata"
+                    poster={heroPoster}
+                    aria-label="Demonstração em vídeo do SmartNose"
+                    onPlay={() => setIsVideoPlaying(true)}
+                    onPause={() => setIsVideoPlaying(false)}
                   />
-
-                  {/* Placeholder content */}
-                  <div className="relative flex flex-col items-center gap-3 text-center px-8">
-                    {/* Icon / device silhouette */}
-                    <div
-                      className="w-20 h-20 rounded-2xl flex items-center justify-center"
-                      style={{
-                        background:
-                          'linear-gradient(135deg, rgba(0,207,170,0.15) 0%, rgba(0,153,204,0.1) 100%)',
-                        border: '1px solid rgba(0,207,170,0.25)',
-                        boxShadow: '0 0 30px rgba(0,207,170,0.15)',
-                      }}
-                    >
-                      {/* SmartNose device icon (simplified) */}
-                      <svg
-                        width="40"
-                        height="40"
-                        viewBox="0 0 40 40"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <rect
-                          x="4"
-                          y="10"
-                          width="32"
-                          height="20"
-                          rx="4"
-                          stroke="#00CFAA"
-                          strokeWidth="1.5"
-                          fill="none"
-                        />
-                        <circle cx="14" cy="20" r="3" fill="#00CFAA" opacity="0.7" />
-                        <circle cx="20" cy="20" r="3" fill="#0099CC" opacity="0.7" />
-                        <circle cx="26" cy="20" r="3" fill="#00CFAA" opacity="0.4" />
-                        <line
-                          x1="8"
-                          y1="32"
-                          x2="16"
-                          y2="32"
-                          stroke="#00CFAA"
-                          strokeWidth="1.5"
-                          strokeLinecap="round"
-                        />
-                        <line
-                          x1="24"
-                          y1="32"
-                          x2="32"
-                          y2="32"
-                          stroke="#0099CC"
-                          strokeWidth="1.5"
-                          strokeLinecap="round"
-                        />
-                      </svg>
-                    </div>
-
-                    <p className="text-sm text-white/30 font-inter tracking-wide">
-                      Imagem do produto será inserida aqui
-                    </p>
-                    <p className="text-xs text-white/20 font-inter">
-                      SmartNose — Protótipo acoplado ao fermentador
-                    </p>
-                  </div>
+                  <button
+                    className="hero-video-toggle"
+                    type="button"
+                    onClick={toggleVideo}
+                    aria-label={isVideoPlaying ? 'Pausar vídeo do SmartNose' : 'Reproduzir vídeo do SmartNose'}
+                  >
+                    {isVideoPlaying ? <Pause size={16} aria-hidden="true" /> : <Play size={16} aria-hidden="true" />}
+                  </button>
                 </div>
               </div>
             </div>
