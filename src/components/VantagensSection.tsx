@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react'
-import { ChevronLeft, ChevronRight } from 'lucide-react'
+import { ChevronLeft, ChevronRight, Pause, Play } from 'lucide-react'
+import dashboardExperiment from '../img/grafico_dashBoard(2).jpg'
+import dashboardSensors from '../img/grafico_dashboard.jpg'
+import dashboardComparison from '../img/grafico_dashboard(1).jpg'
 
 // ─── Minimalist Cohesive Icons ────────────────────────────────────────────────
 
@@ -161,37 +164,73 @@ const BENEFITS: BenefitItem[] = [
 
 const CAROUSEL_SLIDES = [
   {
-    title: "Monitoramento em Tempo Real",
-    description: "Acompanhe a evolução da fermentação com gráficos preditivos e identificação de voláteis sem intervenções manuais.",
-    image: "https://placehold.co/800x450/101928/00CFAA?text=Dashboard+Tempo+Real"
+    title: 'Visualização gráfica do experimento',
+    description: 'Curvas de resposta dos sensores MQ, temperatura e umidade registradas durante o experimento.',
+    image: dashboardExperiment,
+    alt: 'Gráfico do experimento com curvas de sensores MQ, temperatura e umidade.',
   },
   {
-    title: "Comparação de Bateladas",
-    description: "Sobreponha curvas de fermentações anteriores para manter o padrão e rastrear a qualidade da sua produção.",
-    image: "https://placehold.co/800x450/101928/0099CC?text=Comparacao+de+Bateladas"
+    title: 'Respostas em diferentes ensaios',
+    description: 'Dois registros gráficos mostram as respostas dos sensores em configurações distintas do experimento.',
+    image: dashboardSensors,
+    alt: 'Dois gráficos de respostas dos sensores em ensaios com configurações distintas.',
   },
   {
-    title: "Alertas e Relatórios",
-    description: "Receba notificações instantâneas sobre desvios do processo e acesse os registros técnicos completos remotamente.",
-    image: "https://placehold.co/800x450/101928/00E5C0?text=Alertas+e+Relatorios"
-  }
+    title: 'Leitura das curvas dos sensores',
+    description: 'Acompanhe no painel as variações percentuais registradas ao longo do experimento.',
+    image: dashboardComparison,
+    alt: 'Painel gráfico com as curvas percentuais dos sensores ao longo do experimento.',
+  },
 ]
 
 function DashboardDemonstration() {
   const [activeIndex, setActiveIndex] = useState(0)
+  const [isPlaying, setIsPlaying] = useState(true)
+  const [isHovered, setIsHovered] = useState(false)
+  const [isFocused, setIsFocused] = useState(false)
 
   useEffect(() => {
+    const motionPreference = window.matchMedia('(prefers-reduced-motion: reduce)')
+    const updateMotionPreference = () => setIsPlaying(!motionPreference.matches)
+    updateMotionPreference()
+    motionPreference.addEventListener('change', updateMotionPreference)
+    return () => motionPreference.removeEventListener('change', updateMotionPreference)
+  }, [])
+
+  useEffect(() => {
+    if (!isPlaying || isHovered || isFocused) return
     const timer = setInterval(() => {
       setActiveIndex((current) => (current + 1) % CAROUSEL_SLIDES.length)
     }, 6000)
     return () => clearInterval(timer)
-  }, [])
+  }, [isPlaying, isHovered, isFocused])
 
   const nextSlide = () => setActiveIndex((current) => (current + 1) % CAROUSEL_SLIDES.length)
   const prevSlide = () => setActiveIndex((current) => (current - 1 + CAROUSEL_SLIDES.length) % CAROUSEL_SLIDES.length)
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+    if (event.key === 'ArrowRight') {
+      event.preventDefault()
+      nextSlide()
+    } else if (event.key === 'ArrowLeft') {
+      event.preventDefault()
+      prevSlide()
+    }
+  }
 
   return (
-    <div className="w-full mt-16 sm:mt-20">
+    <div
+      className="w-full mt-16 sm:mt-20"
+      role="region"
+      aria-roledescription="carrossel"
+      aria-label="Imagens do sistema SmartNose"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      onFocusCapture={() => setIsFocused(true)}
+      onBlurCapture={(event) => {
+        if (!event.currentTarget.contains(event.relatedTarget as Node | null)) setIsFocused(false)
+      }}
+      onKeyDown={handleKeyDown}
+    >
       {/* Ambient background glow */}
       <div className="relative mx-auto max-w-[900px] rounded-2xl p-[1px] bg-gradient-to-b from-white/15 via-white/5 to-transparent shadow-[0_20px_50px_rgba(0,0,0,0.5)]">
         {/* Soft cyan aura behind the dashboard */}
@@ -203,66 +242,90 @@ function DashboardDemonstration() {
         {/* Dashboard Frame */}
         <div className="relative overflow-hidden rounded-2xl bg-[#070b14]/95 backdrop-blur-xl border border-white/10 p-5 sm:p-7 md:p-8">
           
-          <div className="relative w-full aspect-[16/9] md:aspect-[21/9] rounded-xl overflow-hidden bg-black/50 border border-white/5 mb-6 group">
+          <div className="relative w-full aspect-[16/9] rounded-xl overflow-hidden bg-[#05080e] border border-white/10 mb-6 group">
             {/* Slide Images */}
             <div 
-              className="flex w-full h-full transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]" 
+              className="flex w-full h-full transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] motion-reduce:transition-none" 
               style={{ transform: `translateX(-${activeIndex * 100}%)` }}
+              aria-live={isPlaying && !isHovered && !isFocused ? 'off' : 'polite'}
             >
               {CAROUSEL_SLIDES.map((slide, idx) => (
-                <div key={idx} className="w-full h-full flex-shrink-0 relative">
+                <div
+                  key={slide.title}
+                  className="relative h-full w-full flex-shrink-0"
+                  role="group"
+                  aria-roledescription="slide"
+                  aria-label={`${idx + 1} de ${CAROUSEL_SLIDES.length}: ${slide.title}`}
+                  aria-hidden={idx !== activeIndex}
+                >
                   <img 
                     src={slide.image} 
-                    alt={slide.title}
-                    className="w-full h-full object-cover opacity-80 mix-blend-screen"
-                    loading="lazy"
+                    alt={slide.alt}
+                    className="h-full w-full object-contain"
+                    loading={idx === 0 ? 'eager' : 'lazy'}
+                    decoding="async"
                   />
-                  {/* Subtle inner shadow for depth */}
-                  <div className="absolute inset-0 shadow-[inset_0_0_40px_rgba(0,0,0,0.5)] pointer-events-none"></div>
                 </div>
               ))}
             </div>
 
             {/* Navigation Arrows */}
             <button 
+              type="button"
               onClick={prevSlide}
-              className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-[#05080e]/60 border border-white/10 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 hover:bg-[#00CFAA]/20 hover:border-[#00CFAA]/50 focus:outline-none"
-              aria-label="Anterior"
+              className="absolute left-4 top-1/2 z-10 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-white/20 bg-[#05080e]/85 text-white shadow-lg backdrop-blur transition-colors hover:border-primary hover:bg-primary/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+              aria-label="Imagem anterior"
             >
-              <ChevronLeft size={20} strokeWidth={2} />
+              <ChevronLeft size={21} strokeWidth={2} aria-hidden="true" />
             </button>
             <button 
+              type="button"
               onClick={nextSlide}
-              className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-[#05080e]/60 border border-white/10 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 hover:bg-[#00CFAA]/20 hover:border-[#00CFAA]/50 focus:outline-none"
-              aria-label="Próximo"
+              className="absolute right-4 top-1/2 z-10 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-white/20 bg-[#05080e]/85 text-white shadow-lg backdrop-blur transition-colors hover:border-primary hover:bg-primary/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+              aria-label="Próxima imagem"
             >
-              <ChevronRight size={20} strokeWidth={2} />
+              <ChevronRight size={21} strokeWidth={2} aria-hidden="true" />
             </button>
           </div>
 
           {/* Caption & Title */}
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
-            <div className="max-w-xl">
-              <h4 className="font-jakarta text-xl font-bold text-white transition-opacity duration-300">
+          <div className="flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
+            <div className="max-w-2xl" aria-live={!isPlaying || isHovered || isFocused ? 'polite' : 'off'} aria-atomic="true">
+              <h3 className="font-jakarta text-xl font-bold leading-snug text-white">
                 {CAROUSEL_SLIDES[activeIndex].title}
-              </h4>
-              <p className="mt-2 font-inter text-sm text-slate-400 leading-relaxed transition-opacity duration-300">
+              </h3>
+              <p className="mt-2 font-inter text-sm leading-relaxed text-slate-300">
                 {CAROUSEL_SLIDES[activeIndex].description}
               </p>
             </div>
-            
-            {/* Pagination Dots */}
-            <div className="flex items-center gap-2">
+
+            <div className="flex flex-wrap items-center justify-between gap-4 md:justify-end">
+              <div className="flex items-center gap-1" role="group" aria-label="Selecionar imagem">
               {CAROUSEL_SLIDES.map((_, idx) => (
                 <button
-                  key={idx}
+                  key={CAROUSEL_SLIDES[idx].title}
+                  type="button"
                   onClick={() => setActiveIndex(idx)}
-                  className={`h-1.5 transition-all duration-300 rounded-full ${
-                    activeIndex === idx ? 'w-6 bg-primary shadow-[0_0_10px_rgba(0,207,170,0.4)]' : 'w-2 bg-white/20 hover:bg-white/40'
+                  className="grid h-11 w-11 place-items-center rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                  aria-label={`Mostrar imagem ${idx + 1}: ${CAROUSEL_SLIDES[idx].title}`}
+                  aria-current={activeIndex === idx ? 'true' : undefined}
+                >
+                  <span className={`h-1.5 rounded-full transition-[width,background-color] duration-300 motion-reduce:transition-none ${
+                    activeIndex === idx ? 'w-7 bg-primary' : 'w-2 bg-white/30 hover:bg-white/60'
                   }`}
-                  aria-label={`Ir para a tela ${idx + 1}`}
-                />
+                  />
+                </button>
               ))}
+              </div>
+              <button
+                type="button"
+                onClick={() => setIsPlaying((playing) => !playing)}
+                className="inline-flex min-h-11 items-center gap-2 rounded-full border border-white/15 bg-white/[0.04] px-4 text-sm font-medium text-slate-200 transition-colors hover:border-primary/60 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                aria-label={isPlaying ? 'Pausar troca automática das imagens' : 'Retomar troca automática das imagens'}
+              >
+                {isPlaying ? <Pause size={15} aria-hidden="true" /> : <Play size={15} aria-hidden="true" />}
+                {isPlaying ? 'Pausar' : 'Reproduzir'}
+              </button>
             </div>
           </div>
 
