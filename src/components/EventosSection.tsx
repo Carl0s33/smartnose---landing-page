@@ -77,17 +77,40 @@ export default function EventosSection() {
           </p>
         </header>
 
-        <div className="events-rule" aria-hidden="true"><span>01 — 03</span></div>
+        <div className="events-showcase">
+          <nav className="events-selector" aria-label="Selecionar evento">
+            <p className="events-selector__eyebrow">EVENTOS <span>01 — 03</span></p>
+            <div className="events-selector__options">
+              {EVENTS.map((item, index) => (
+                <button
+                  className={`events-selector__button${index === eventIndex ? ' is-active' : ''}`}
+                  type="button"
+                  key={item.name}
+                  onClick={() => selectEvent(index)}
+                  aria-pressed={index === eventIndex}
+                >
+                  <span className="events-selector__number">0{index + 1}</span>
+                  <span className="events-selector__name">{item.name}</span>
+                  <span className="events-selector__count">{String(item.photos.length).padStart(2, '0')} fotos</span>
+                  <ArrowRight className="events-selector__arrow" size={18} aria-hidden="true" />
+                </button>
+              ))}
+            </div>
+            <p className="events-selector__hint">Selecione um evento para explorar os registros.</p>
+          </nav>
 
-        <div className="events-gallery">
           <div className="events-gallery__viewer" role="group" aria-label={`Fotos do evento ${event.name}`}>
             <div className="events-gallery__image-wrap" aria-live="polite" aria-atomic="true">
-              <img className="events-gallery__image" src={photo.src} alt={photo.alt} />
-              <span className="events-gallery__event-label">{event.name}</span>
-              <span className="events-gallery__counter">{String(photoIndex + 1).padStart(2, '0')} / {String(event.photos.length).padStart(2, '0')}</span>
-            </div>
-            <div className="events-gallery__controls">
-              <p>{event.description}</p>
+              <img className="events-gallery__image" src={photo.src} alt={photo.alt} key={photo.src} />
+              <div className="events-gallery__event-card">
+                <span className="events-gallery__event-index">EVENTO 0{eventIndex + 1}</span>
+                <h3>{event.name}</h3>
+                <p>{event.description}</p>
+              </div>
+              <div className="events-gallery__image-footer">
+                <p>{photo.alt}</p>
+                <span className="events-gallery__counter">{String(photoIndex + 1).padStart(2, '0')} <span aria-hidden="true">/</span> {String(event.photos.length).padStart(2, '0')}</span>
+              </div>
               <div className="events-gallery__arrows" role="group" aria-label="Navegar pelas fotos">
                 <button className="events-arrow" type="button" onClick={() => movePhoto(-1)} aria-label="Foto anterior">
                   <ArrowLeft size={19} aria-hidden="true" />
@@ -112,26 +135,6 @@ export default function EventosSection() {
               ))}
             </div>
           </div>
-
-          <nav className="events-selector" aria-label="Selecionar evento">
-            <p className="events-selector__eyebrow">EVENTOS</p>
-            <div className="events-selector__options">
-              {EVENTS.map((item, index) => (
-                <button
-                  className={`events-selector__button${index === eventIndex ? ' is-active' : ''}`}
-                  type="button"
-                  key={item.name}
-                  onClick={() => selectEvent(index)}
-                  aria-pressed={index === eventIndex}
-                >
-                  <span className="events-selector__number">0{index + 1}</span>
-                  <span>{item.name}</span>
-                  <ArrowRight className="events-selector__arrow" size={18} aria-hidden="true" />
-                </button>
-              ))}
-            </div>
-            <p className="events-selector__hint">Selecione um evento para ver os registros.</p>
-          </nav>
         </div>
       </div>
     </section>
