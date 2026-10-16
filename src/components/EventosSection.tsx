@@ -1,5 +1,5 @@
-import { useState } from 'react'
-import { ArrowLeft, ArrowRight } from 'lucide-react'
+import { useEffect, useState } from 'react'
+import { ArrowLeft, ArrowRight, Pause, Play } from 'lucide-react'
 
 import goRnPresentation from '../img/goRN_apresentação.jpg'
 import goRnTeam from '../img/goRN_apresentação(1).jpg'
@@ -10,8 +10,8 @@ import secitexBooth from '../img/Apresentação_Secitex(2).jpg'
 import secitexTeam from '../img/Apresentação_Secitex(3).jpg'
 import secitexBanner from '../img/banner_secitex.jpg'
 import secitexGroup from '../img/equipe_Secitex.jpg'
-import proitecPresentation from '../img/apresentação_proitec.jpg'
-import proitecDemo from '../img/Apresentação_proitec(1).jpg'
+import expotecPresentation from '../img/apresentação_expotec.jpg'
+import expotecDemo from '../img/Apresentação_expotec(1).jpg'
 
 const EVENTS = [
   {
@@ -36,11 +36,11 @@ const EVENTS = [
     ],
   },
   {
-    name: 'Proitec',
-    description: 'Apresentação do projeto e demonstração do protótipo na Proitec.',
+    name: 'Expotec',
+    description: 'Apresentação do projeto e demonstração do protótipo na Expotec.',
     photos: [
-      { src: proitecPresentation, alt: 'Equipe apresenta o SmartNose na Proitec' },
-      { src: proitecDemo, alt: 'Demonstração do SmartNose ao público na Proitec' },
+      { src: expotecPresentation, alt: 'Equipe apresenta o SmartNose na Expotec' },
+      { src: expotecDemo, alt: 'Demonstração do SmartNose ao público na Expotec' },
     ],
   },
 ]
@@ -48,8 +48,27 @@ const EVENTS = [
 export default function EventosSection() {
   const [eventIndex, setEventIndex] = useState(0)
   const [photoIndex, setPhotoIndex] = useState(0)
+  const [isPlaying, setIsPlaying] = useState(true)
+  const [isHovered, setIsHovered] = useState(false)
+  const [isFocused, setIsFocused] = useState(false)
   const event = EVENTS[eventIndex]
   const photo = event.photos[photoIndex]
+
+  useEffect(() => {
+    const motionPreference = window.matchMedia('(prefers-reduced-motion: reduce)')
+    const updateMotionPreference = () => setIsPlaying(!motionPreference.matches)
+    updateMotionPreference()
+    motionPreference.addEventListener('change', updateMotionPreference)
+    return () => motionPreference.removeEventListener('change', updateMotionPreference)
+  }, [])
+
+  useEffect(() => {
+    if (!isPlaying || isHovered || isFocused) return
+    const timer = window.setInterval(() => {
+      setPhotoIndex((current) => (current + 1) % event.photos.length)
+    }, 6000)
+    return () => window.clearInterval(timer)
+  }, [event.photos.length, isFocused, isHovered, isPlaying])
 
   function selectEvent(index: number) {
     setEventIndex(index)
@@ -77,7 +96,13 @@ export default function EventosSection() {
           </p>
         </header>
 
-        <div className="events-showcase">
+        <div
+          className="events-showcase"
+          onFocusCapture={() => setIsFocused(true)}
+          onBlurCapture={(focusEvent) => {
+            if (!focusEvent.currentTarget.contains(focusEvent.relatedTarget as Node | null)) setIsFocused(false)
+          }}
+        >
           <nav className="events-selector" aria-label="Selecionar evento">
             <p className="events-selector__eyebrow">EVENTOS <span>01 — 03</span></p>
             <div className="events-selector__options">
@@ -99,16 +124,20 @@ export default function EventosSection() {
             <p className="events-selector__hint">Selecione um evento para explorar os registros.</p>
           </nav>
 
-          <div className="events-gallery__viewer" role="group" aria-label={`Fotos do evento ${event.name}`}>
-            <div className="events-gallery__image-wrap" aria-live="polite" aria-atomic="true">
+          <div
+            className="events-gallery__viewer"
+            role="region"
+            aria-roledescription="carrossel"
+            aria-label={`Fotos do evento ${event.name}`}
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
+          >
+            <div className="events-gallery__image-wrap" aria-live={isPlaying && !isHovered && !isFocused ? 'off' : 'polite'} aria-atomic="true">
               <img className="events-gallery__image" src={photo.src} alt={photo.alt} key={photo.src} />
-              <div className="events-gallery__event-card">
+              <div className="events-gallery__caption">
                 <span className="events-gallery__event-index">EVENTO 0{eventIndex + 1}</span>
                 <h3>{event.name}</h3>
                 <p>{event.description}</p>
-              </div>
-              <div className="events-gallery__image-footer">
-                <p>{photo.alt}</p>
                 <span className="events-gallery__counter">{String(photoIndex + 1).padStart(2, '0')} <span aria-hidden="true">/</span> {String(event.photos.length).padStart(2, '0')}</span>
               </div>
               <div className="events-gallery__arrows" role="group" aria-label="Navegar pelas fotos">
@@ -120,20 +149,16 @@ export default function EventosSection() {
                 </button>
               </div>
             </div>
-            <div className="events-gallery__thumbnails" role="group" aria-label="Selecionar foto">
-              {event.photos.map((item, index) => (
-                <button
-                  className={`events-thumbnail${index === photoIndex ? ' is-active' : ''}`}
-                  type="button"
-                  key={item.src}
-                  onClick={() => setPhotoIndex(index)}
-                  aria-label={`Mostrar foto ${index + 1} de ${event.photos.length}: ${item.alt}`}
-                  aria-pressed={index === photoIndex}
-                >
-                  <img src={item.src} alt="" loading="eager" />
-                </button>
-              ))}
-            </div>
+            <button
+              className="events-autoplay-toggle"
+              type="button"
+              onClick={() => setIsPlaying((playing) => !playing)}
+              aria-label={isPlaying ? 'Pausar troca automática das fotos' : 'Retomar troca automática das fotos'}
+              aria-pressed={!isPlaying}
+            >
+              {isPlaying ? <Pause size={14} aria-hidden="true" /> : <Play size={14} aria-hidden="true" />}
+              {isPlaying ? 'Pausar rotação' : 'Retomar rotação'}
+            </button>
           </div>
         </div>
       </div>
