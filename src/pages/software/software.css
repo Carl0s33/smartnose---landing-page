@@ -1,0 +1,15 @@
+.software-page{height:100svh;min-height:100svh;background:#020406}
+.software-page__ambient,.software-hero__visual,.software-hero__visual-label,.software-float-card{display:none}
+.software-page__image{position:absolute;z-index:-1;inset:0;overflow:hidden;background:#000}
+.software-page__image img{position:absolute;right:0;bottom:-2%;width:min(100%,1920px);height:100%;object-fit:contain;object-position:right bottom}
+.software-page__image-glow{position:absolute;z-index:-1;top:20%;right:8%;width:min(48vw,690px);aspect-ratio:1;border-radius:50%;background:rgba(0,181,191,.13);filter:blur(100px);pointer-events:none}
+.software-header{position:absolute;top:0;right:0;left:0;width:100%;min-height:72px;grid-template-columns:1fr auto 1fr;padding:0 clamp(22px,5vw,76px);border-bottom-color:rgba(255,255,255,.08);background:rgba(3,6,10,.76);backdrop-filter:blur(14px)}
+.software-brand{font-size:17px}.software-brand__mark{width:30px;height:30px;border-radius:8px}.software-nav{gap:clamp(18px,3vw,42px)}
+.software-nav a{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.45px}.software-header__cta{min-height:38px;padding:0 15px;background:linear-gradient(95deg,#00cfaa,#0099cc);color:#031018}
+.software-hero{width:min(100% - 112px,1600px);height:100%;min-height:0;grid-template-columns:minmax(0,1fr);align-items:end;padding:72px 0 46px}
+.software-hero__copy{align-self:end;max-width:470px;padding:0 0 8px}.software-eyebrow{margin-bottom:17px;color:#7bdfd1;font-size:9px}
+.software-hero h1{max-width:430px;font-size:clamp(36px,4vw,58px);line-height:1.04;letter-spacing:-.05em;text-shadow:0 3px 22px rgba(0,0,0,.72)}
+.software-hero h1 span{display:inline;color:#00d8c0;background:none;-webkit-text-fill-color:#00d8c0}.software-hero__description{max-width:380px;margin-top:15px;color:#c2cbd2;font-size:14px;line-height:1.55;text-shadow:0 2px 14px #000}
+.software-hero__actions{margin-top:21px}.software-button{min-height:44px;padding-inline:18px}.software-scroll-hint{bottom:28px;color:#a8b5bc}
+@media(max-width:680px){.software-page{height:auto}.software-header{min-height:64px;padding-inline:18px}.software-brand{font-size:16px}.software-hero{width:calc(100% - 40px);min-height:100svh;height:auto;align-items:end;padding:64px 0}.software-page__image img{top:8%;right:-24%;bottom:auto;width:145%;height:62%;object-fit:contain;object-position:center top}.software-page__image-glow{top:16%;right:-8%;width:90vw;filter:blur(75px)}.software-hero__copy{max-width:540px;padding:0 0 6px}.software-eyebrow{max-width:300px;font-size:8px}.software-hero h1{max-width:440px;font-size:clamp(34px,9vw,48px)}.software-hero__description{max-width:360px;font-size:13px}.software-hero__actions{margin-top:17px}.software-scroll-hint{bottom:19px;left:0;font-size:8px}}
+@media(prefers-reduced-motion:reduce){.software-page *, .software-page *::before, .software-page *::after{transition-duration:.01ms!important;animation-duration:.01ms!important}}

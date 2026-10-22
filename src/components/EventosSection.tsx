@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { ArrowLeft, ArrowRight, Pause, Play } from 'lucide-react'
+import { ArrowLeft, ArrowRight } from 'lucide-react'
 
 import goRnPresentation from '../img/goRN_apresentação.jpg'
 import goRnTeam from '../img/goRN_apresentação(1).jpg'
@@ -64,10 +64,10 @@ export default function EventosSection() {
 
   useEffect(() => {
     if (!isPlaying || isHovered || isFocused) return
-    const timer = window.setInterval(() => {
+    const timer = window.setTimeout(() => {
       setPhotoIndex((current) => (current + 1) % event.photos.length)
     }, 6000)
-    return () => window.clearInterval(timer)
+    return () => window.clearTimeout(timer)
   }, [event.photos.length, isFocused, isHovered, isPlaying])
 
   function selectEvent(index: number) {
@@ -125,13 +125,29 @@ export default function EventosSection() {
           </nav>
 
           <div
-            className="events-gallery__viewer"
+            className={`events-gallery__viewer${isPlaying && !isHovered && !isFocused ? '' : ' is-progress-paused'}`}
             role="region"
             aria-roledescription="carrossel"
             aria-label={`Fotos do evento ${event.name}`}
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
           >
+            <div className="events-gallery__progress" role="group" aria-label={`Selecionar foto do evento ${event.name}`}>
+              {event.photos.map((item, index) => (
+                <button
+                  className={`events-gallery__progress-step${index === photoIndex ? ' is-current' : ''}${index < photoIndex ? ' is-complete' : ''}`}
+                  type="button"
+                  key={item.src}
+                  onClick={() => setPhotoIndex(index)}
+                  aria-label={`Mostrar foto ${index + 1} de ${event.photos.length}: ${item.alt}`}
+                  aria-current={index === photoIndex ? 'true' : undefined}
+                >
+                  <span className="events-gallery__progress-track" aria-hidden="true">
+                    <span className="events-gallery__progress-fill" key={`${item.src}-${index === photoIndex ? photoIndex : 'idle'}`} />
+                  </span>
+                </button>
+              ))}
+            </div>
             <div className="events-gallery__image-wrap" aria-live={isPlaying && !isHovered && !isFocused ? 'off' : 'polite'} aria-atomic="true">
               <img className="events-gallery__image" src={photo.src} alt={photo.alt} key={photo.src} />
               <div className="events-gallery__caption">
@@ -149,16 +165,6 @@ export default function EventosSection() {
                 </button>
               </div>
             </div>
-            <button
-              className="events-autoplay-toggle"
-              type="button"
-              onClick={() => setIsPlaying((playing) => !playing)}
-              aria-label={isPlaying ? 'Pausar troca automática das fotos' : 'Retomar troca automática das fotos'}
-              aria-pressed={!isPlaying}
-            >
-              {isPlaying ? <Pause size={14} aria-hidden="true" /> : <Play size={14} aria-hidden="true" />}
-              {isPlaying ? 'Pausar rotação' : 'Retomar rotação'}
-            </button>
           </div>
         </div>
       </div>

@@ -1,28 +1,23 @@
-import { useEffect, useRef, useState } from 'react'
-import { MessageSquare, ChevronDown, Pause, Play } from 'lucide-react'
+import { useEffect, useRef } from 'react'
+import { MessageSquare, ChevronDown } from 'lucide-react'
 import heroVideo from '../img/hero_video.mp4'
 import heroPoster from '../img/img_prototipo.jpg'
 
 export default function HeroSection() {
   const videoRef = useRef<HTMLVideoElement>(null)
-  const [isVideoPlaying, setIsVideoPlaying] = useState(false)
 
   useEffect(() => {
     const video = videoRef.current
-    if (!video || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
-    void video.play().then(() => setIsVideoPlaying(true)).catch(() => setIsVideoPlaying(false))
-  }, [])
-
-  function toggleVideo() {
-    const video = videoRef.current
     if (!video) return
-    if (video.paused) {
-      void video.play().then(() => setIsVideoPlaying(true)).catch(() => setIsVideoPlaying(false))
-    } else {
-      video.pause()
-      setIsVideoPlaying(false)
+    const motionPreference = window.matchMedia('(prefers-reduced-motion: reduce)')
+    const syncPlayback = () => {
+      if (motionPreference.matches) video.pause()
+      else void video.play().catch(() => undefined)
     }
-  }
+    syncPlayback()
+    motionPreference.addEventListener('change', syncPlayback)
+    return () => motionPreference.removeEventListener('change', syncPlayback)
+  }, [])
 
   return (
     <section
@@ -109,7 +104,7 @@ export default function HeroSection() {
 
               {/* Primary CTA — gradient pill */}
               <a
-                href="#equipe"
+                href="/smartnose---landing-page/software/"
                 id="cta-conhecer-equipe"
                 className="relative flex items-center gap-2 px-7 py-3.5 rounded-full font-jakarta font-bold text-[14px] uppercase tracking-[0.35px] text-[#020617] transition-all duration-300 hover:scale-[1.03] hover:brightness-110 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
                 style={{
@@ -139,18 +134,7 @@ export default function HeroSection() {
 
           {/* ── RIGHT COLUMN — Hero Image ────────────────────────────── */}
           <div className="col-span-1 lg:col-span-6 opacity-initial animate-scale-in">
-            {/* Electric frame wrapper */}
-            <div
-              className="relative rounded-xl p-[6px]"
-              style={{
-                background:
-                  'linear-gradient(29.58deg, rgba(0,207,170,0.6) 0%, rgba(0,207,170,0) 50%, rgba(0,153,204,0.6) 100%)',
-                boxShadow:
-                  '0 0 40px -4px rgba(0,207,170,0.35), 0 0 15px -2px rgba(0,229,192,0.25)',
-              }}
-            >
-              {/* Inner card */}
-              <div className="relative rounded-[8px] overflow-hidden bg-black border border-white/10">
+            <div className="relative overflow-hidden rounded-xl bg-black">
                 <div className="hero-video-frame">
                   <video
                     ref={videoRef}
@@ -162,19 +146,8 @@ export default function HeroSection() {
                     preload="metadata"
                     poster={heroPoster}
                     aria-label="Demonstração em vídeo do SmartNose"
-                    onPlay={() => setIsVideoPlaying(true)}
-                    onPause={() => setIsVideoPlaying(false)}
                   />
-                  <button
-                    className="hero-video-toggle"
-                    type="button"
-                    onClick={toggleVideo}
-                    aria-label={isVideoPlaying ? 'Pausar vídeo do SmartNose' : 'Reproduzir vídeo do SmartNose'}
-                  >
-                    {isVideoPlaying ? <Pause size={16} aria-hidden="true" /> : <Play size={16} aria-hidden="true" />}
-                  </button>
                 </div>
-              </div>
             </div>
           </div>
           {/* ── End Right Column ─────────────────────────────────────── */}
@@ -184,3 +157,4 @@ export default function HeroSection() {
     </section>
   )
 }
+

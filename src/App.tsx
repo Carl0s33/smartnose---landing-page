@@ -6,8 +6,13 @@ import OQueESection from './components/OQueESection'
 import VantagensSection from './components/VantagensSection'
 import EventosSection from './components/EventosSection'
 import EquipeSection from './components/EquipeSection'
+import SoftwareLandingPage from './pages/software/SoftwareLandingPage'
 
 function App() {
+  if (window.location.pathname.replace(/\/$/, '').endsWith('/software')) {
+    return <SoftwareLandingPage />
+  }
+
   return (
     <main className="min-h-screen bg-brand-dark overflow-hidden">
       <Header />
@@ -22,5 +27,6 @@ function App() {
 }
 
 export default App
+
 
 
