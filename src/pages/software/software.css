@@ -1,15 +1,38 @@
 .software-page{height:100svh;min-height:100svh;background:#020406}
+.software-page{height:auto}
 .software-page__ambient,.software-hero__visual,.software-hero__visual-label,.software-float-card{display:none}
-.software-page__image{position:absolute;z-index:-1;inset:0;overflow:hidden;background:#000}
+.software-page__image{position:absolute;z-index:0;inset:0 0 auto;height:100svh;overflow:hidden;background:#000}
 .software-page__image img{position:absolute;right:0;bottom:-2%;width:min(100%,1920px);height:100%;object-fit:contain;object-position:right bottom}
 .software-page__image-glow{position:absolute;z-index:-1;top:20%;right:8%;width:min(48vw,690px);aspect-ratio:1;border-radius:50%;background:rgba(0,181,191,.13);filter:blur(100px);pointer-events:none}
 .software-header{position:absolute;top:0;right:0;left:0;width:100%;min-height:72px;grid-template-columns:1fr auto 1fr;padding:0 clamp(22px,5vw,76px);border-bottom-color:rgba(255,255,255,.08);background:rgba(3,6,10,.76);backdrop-filter:blur(14px)}
 .software-brand{font-size:17px}.software-brand__mark{width:30px;height:30px;border-radius:8px}.software-nav{gap:clamp(18px,3vw,42px)}
 .software-nav a{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.45px}.software-header__cta{min-height:38px;padding:0 15px;background:linear-gradient(95deg,#00cfaa,#0099cc);color:#031018}
-.software-hero{width:min(100% - 112px,1600px);height:100%;min-height:0;grid-template-columns:minmax(0,1fr);align-items:end;padding:72px 0 46px}
+.software-hero{position:relative;z-index:1;width:min(100% - 112px,1600px);height:100%;min-height:0;grid-template-columns:minmax(0,1fr);align-items:end;padding:72px 0 46px}
 .software-hero__copy{align-self:end;max-width:470px;padding:0 0 8px}.software-eyebrow{margin-bottom:17px;color:#7bdfd1;font-size:9px}
 .software-hero h1{max-width:430px;font-size:clamp(36px,4vw,58px);line-height:1.04;letter-spacing:-.05em;text-shadow:0 3px 22px rgba(0,0,0,.72)}
 .software-hero h1 span{display:inline;color:#00d8c0;background:none;-webkit-text-fill-color:#00d8c0}.software-hero__description{max-width:380px;margin-top:15px;color:#c2cbd2;font-size:14px;line-height:1.55;text-shadow:0 2px 14px #000}
 .software-hero__actions{margin-top:21px}.software-button{min-height:44px;padding-inline:18px}.software-scroll-hint{bottom:28px;color:#a8b5bc}
 @media(max-width:680px){.software-page{height:auto}.software-header{min-height:64px;padding-inline:18px}.software-brand{font-size:16px}.software-hero{width:calc(100% - 40px);min-height:100svh;height:auto;align-items:end;padding:64px 0}.software-page__image img{top:8%;right:-24%;bottom:auto;width:145%;height:62%;object-fit:contain;object-position:center top}.software-page__image-glow{top:16%;right:-8%;width:90vw;filter:blur(75px)}.software-hero__copy{max-width:540px;padding:0 0 6px}.software-eyebrow{max-width:300px;font-size:8px}.software-hero h1{max-width:440px;font-size:clamp(34px,9vw,48px)}.software-hero__description{max-width:360px;font-size:13px}.software-hero__actions{margin-top:17px}.software-scroll-hint{bottom:19px;left:0;font-size:8px}}
 @media(prefers-reduced-motion:reduce){.software-page *, .software-page *::before, .software-page *::after{transition-duration:.01ms!important;animation-duration:.01ms!important}}
+
+.software-updates{padding:clamp(58px,8vw,112px) max(24px,calc((100vw - 1440px)/2));background:#f5f7fa;color:#101722}
+.software-updates__header{display:flex;align-items:end;justify-content:space-between;gap:24px;margin-bottom:32px}
+.software-updates__header h2{margin:0;color:#101722;font:700 clamp(30px,4vw,48px)/1.08 'Plus Jakarta Sans',sans-serif;letter-spacing:-.035em}
+.software-updates__header p{margin:8px 0 0;color:#5d6875;font:400 17px/1.5 Inter,sans-serif}
+.software-updates__controls{display:flex;gap:8px;flex-shrink:0}
+.software-updates__controls button{display:grid;width:46px;height:46px;place-items:center;border:1px solid rgba(0,207,170,.34);border-radius:10px;background:#e4fbf7;color:#007f73;cursor:pointer;transition:background .18s ease,transform .18s ease}
+.software-updates__controls button:hover{background:#c9f5ed;transform:translateY(-2px)}
+.software-updates__controls button:focus-visible,.software-update-card:focus-visible{outline:3px solid #009b89;outline-offset:3px}
+.software-updates__rail{display:flex;gap:16px;overflow-x:auto;overscroll-behavior-inline:contain;scroll-snap-type:x mandatory;scrollbar-width:thin;scrollbar-color:#8bded1 #e4e8ed;padding:0 0 12px}
+.software-update-card{position:relative;flex:0 0 16%;min-width:150px;aspect-ratio:1.6/1;overflow:hidden;scroll-snap-align:start;padding:0;border:0;border-radius:8px;background:#111820;cursor:pointer;transition:flex-basis .35s cubic-bezier(.2,.8,.2,1),opacity .2s ease}
+.software-update-card.is-active{flex-basis:min(64%,900px)}
+.software-update-card img{width:100%;height:100%;display:block;object-fit:cover;object-position:top center;transition:transform .4s ease}
+.software-update-card:hover img{transform:scale(1.025)}
+.software-updates__feature{display:flex;align-items:center;justify-content:space-between;gap:32px;padding-top:24px}
+.software-updates__feature>div{max-width:850px}.software-updates__feature h3{margin:0;color:#111923;font:700 clamp(22px,2.4vw,30px)/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:-.025em}
+.software-updates__feature p{margin:7px 0 0;color:#5b6672;font:400 16px/1.6 Inter,sans-serif}
+.software-updates__feature>a{display:inline-flex;min-height:48px;flex:0 0 auto;align-items:center;justify-content:center;gap:10px;padding:0 18px;border:1px solid #00a995;border-radius:8px;color:#007b6f;font:700 13px Inter,sans-serif;text-decoration:none;transition:background .18s ease,color .18s ease}
+.software-updates__feature>a:hover{background:#00a995;color:white}
+.software-updates a:focus-visible{outline:3px solid #009b89;outline-offset:3px}
+@media(max-width:680px){.software-updates{padding:56px 20px}.software-updates__header{align-items:start;margin-bottom:23px}.software-updates__header h2{font-size:30px}.software-updates__header p{font-size:14px}.software-updates__controls{gap:6px}.software-updates__controls button{width:42px;height:42px}.software-update-card{flex-basis:24%;min-width:128px;aspect-ratio:1.25/1}.software-update-card.is-active{flex-basis:78%}.software-updates__feature{align-items:start;flex-direction:column;gap:16px;padding-top:18px}.software-updates__feature p{font-size:14px}.software-updates__feature>a{min-height:46px}}
+@media(prefers-reduced-motion:reduce){.software-update-card,.software-update-card img,.software-updates__controls button{transition:none}}

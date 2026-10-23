@@ -14,10 +14,12 @@ function App() {
   }
 
   return (
-    <main className="min-h-screen bg-brand-dark overflow-hidden">
+    <main className="min-h-screen overflow-x-clip bg-brand-dark">
       <Header />
-      <HeroSection />
-      <OQueESection />
+      <div className="hero-scroll-stage relative">
+        <HeroSection />
+        <OQueESection />
+      </div>
       <ProblemaSection />
       <VantagensSection />
       <EventosSection />

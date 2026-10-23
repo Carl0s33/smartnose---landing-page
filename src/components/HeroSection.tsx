@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react'
-import { MessageSquare, ChevronDown } from 'lucide-react'
+import { ArrowUpRight, ChevronDown } from 'lucide-react'
 import heroVideo from '../img/hero_video.mp4'
 import heroPoster from '../img/img_prototipo.jpg'
 
@@ -113,8 +113,8 @@ export default function HeroSection() {
                     '0 0 25px -3px rgba(0,207,170,0.4), 0 0 10px -2px rgba(0,229,192,0.3)',
                 }}
               >
-                <MessageSquare size={18} strokeWidth={2.2} />
-                Conhecer a Equipe
+                <ArrowUpRight size={18} strokeWidth={2.2} aria-hidden="true" />
+                Conhecer o sistema
               </a>
 
               {/* Secondary CTA — ghost pill */}

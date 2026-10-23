@@ -151,7 +151,7 @@ export default function OQueESection() {
     <section
       id="o-que-e"
       aria-labelledby="o-que-e-title"
-      className="relative isolate overflow-hidden border-b border-white/5 bg-brand-dark px-6 py-20 sm:px-8 sm:py-24"
+      className="relative z-10 isolate overflow-hidden border-b border-white/5 bg-brand-dark px-6 py-20 sm:px-8 sm:py-24"
     >
       {/* Esfera radial ciano/azul */}
       <div
