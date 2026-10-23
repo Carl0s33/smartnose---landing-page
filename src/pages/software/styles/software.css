@@ -44,3 +44,12 @@
   .software-hero { box-sizing: border-box; height: 100svh; min-height: 100svh; }
   .software-updates { position: relative; z-index: 2; margin-top: 0; }
 }
+
+.software-updates__inner { width: min(100%, 1232px); margin-inline: auto; }
+.software-updates__header { align-items: end; }
+.software-demo__screen { position: relative; width: 100%; aspect-ratio: 16 / 8.1; overflow: hidden; border: 1px solid rgba(0,207,170,.18); border-radius: 14px; background: linear-gradient(145deg,#101820,#080d12); box-shadow: 0 24px 64px rgba(0,0,0,.2); }
+.software-demo__screen img { display: block; width: 100%; height: 100%; object-fit: contain; animation: software-demo-enter .35s ease both; }
+.software-demo__counter { position: absolute; right: 16px; bottom: 14px; padding: 7px 10px; border: 1px solid rgba(0,207,170,.3); border-radius: 5px; background: rgba(3,10,15,.82); color: #83e5d3; font: 700 11px 'JetBrains Mono',monospace; letter-spacing: .08em; }
+@keyframes software-demo-enter { from { opacity: .45; transform: scale(.99); } to { opacity: 1; transform: scale(1); } }
+@media(max-width:680px) { .software-demo__screen { aspect-ratio: 4 / 3; border-radius: 9px; } .software-demo__counter { right: 9px; bottom: 9px; } }
+@media(prefers-reduced-motion:reduce) { .software-demo__screen img { animation: none; } }
