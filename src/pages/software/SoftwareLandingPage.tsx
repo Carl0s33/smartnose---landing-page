@@ -1,11 +1,11 @@
 import { useState } from 'react'
 import { ArrowDownRight, ArrowUpRight, ArrowLeft, ArrowRight, Activity, Menu, House } from 'lucide-react'
-import softwareHero from './hero-sofware.png'
-import dashboard from './dashboard.png'
-import sensors from './controle-sensores.png'
-import experiments from './lista-experimentos.png'
-import hardware from './controle-hardware.png'
-import './software.css'
+import softwareHero from './img/hero-sofware.png'
+import dashboard from './img/dashboard.png'
+import sensors from './img/controle-sensores.png'
+import experiments from './img/lista-experimentos.png'
+import hardware from './img/controle-hardware.png'
+import './styles/software.css'
 
 const navigation = ['Início', 'O software', 'Recursos', 'Contato']
 const updates = [
@@ -106,4 +106,6 @@ export default function SoftwareLandingPage() {
     </main>
   )
 }
+
+
 
