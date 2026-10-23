@@ -37,3 +37,10 @@
 @media(max-width:680px){.software-updates{padding:56px 20px}.software-updates__header{align-items:start;margin-bottom:23px}.software-updates__header h2{font-size:30px}.software-updates__header p{font-size:14px}.software-updates__controls{gap:6px}.software-updates__controls button{width:42px;height:42px}.software-update-card{flex-basis:24%;min-width:128px;aspect-ratio:1.25/1}.software-update-card.is-active{flex-basis:78%}.software-updates__feature{align-items:start;flex-direction:column;gap:16px;padding-top:18px}.software-updates__feature p{font-size:14px}.software-updates__feature>a{min-height:46px}}
 @media(prefers-reduced-motion:reduce){.software-update-card,.software-update-card img,.software-updates__controls button{transition:none}}
 
+
+/* Keep the demo in normal flow after a full viewport hero. */
+@media (min-width: 681px) {
+  .software-page { position: relative; height: auto; min-height: 100svh; }
+  .software-hero { box-sizing: border-box; height: 100svh; min-height: 100svh; }
+  .software-updates { position: relative; z-index: 2; margin-top: 0; }
+}
