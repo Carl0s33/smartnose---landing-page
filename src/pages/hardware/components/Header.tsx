@@ -189,6 +189,7 @@ export default function Header() {
               </a>
             )
           })}
+          <a href="#/software" className={"font-jakarta font-bold text-[13px] uppercase tracking-[0.65px] whitespace-nowrap text-[#9CA3AF] transition-colors hover:text-white"}>Software</a>
         </nav>
 
         {/* ── ACTIONS ───────────────────────────────────────────────────── */}
@@ -289,5 +290,7 @@ export default function Header() {
     </header>
   )
 }
+
+
 
 
