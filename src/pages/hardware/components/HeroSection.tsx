@@ -104,7 +104,7 @@ export default function HeroSection() {
 
               {/* Primary CTA — gradient pill */}
               <a
-                href="/smartnose---landing-page/software/"
+                href="#/software"
                 id="cta-conhecer-equipe"
                 className="relative flex items-center gap-2 px-7 py-3.5 rounded-full font-jakarta font-bold text-[14px] uppercase tracking-[0.35px] text-[#020617] transition-all duration-300 hover:scale-[1.03] hover:brightness-110 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
                 style={{
@@ -157,6 +157,7 @@ export default function HeroSection() {
     </section>
   )
 }
+
 
 
 

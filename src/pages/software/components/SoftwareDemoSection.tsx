@@ -16,11 +16,29 @@ export default function SoftwareDemoSection() {
   const [activeUpdate, setActiveUpdate] = useState(0)
   const update = updates[activeUpdate]
   const moveUpdate = (direction: number) => setActiveUpdate((index) => (index + direction + updates.length) % updates.length)
+
   return (
     <section className="software-updates" id="novidades" aria-labelledby="software-updates-title">
-      <div className="software-updates__header"><div><h2 id="software-updates-title">O que está acontecendo</h2><p>Conheça as telas e recursos do sistema SmartNose.</p></div><div className="software-updates__controls" aria-label="Navegação das novidades"><button type="button" onClick={() => moveUpdate(-1)} aria-label="Novidade anterior"><ArrowLeft size={19} /></button><button type="button" onClick={() => moveUpdate(1)} aria-label="Próxima novidade"><ArrowRight size={19} /></button></div></div>
-      <div className="software-updates__rail" aria-label="Capturas do sistema">{updates.map((item, index) => <button className={`software-update-card${index === activeUpdate ? ' is-active' : ''}`} key={item.title} type="button" onClick={() => setActiveUpdate(index)} aria-label={`Selecionar: ${item.title}`} aria-pressed={index === activeUpdate}><img src={item.image} alt={item.alt} loading="lazy" /></button>)}</div>
-      <div className="software-updates__feature" aria-live="polite"><div><h3>{update.title}</h3><p>{update.description}</p></div><a href="#">{update.action}<ArrowRight size={16} aria-hidden="true" /></a></div>
+      <div className="software-updates__inner">
+        <header className="software-updates__header">
+          <div>
+            <h2 id="software-updates-title">O que está acontecendo</h2>
+            <p>Conheça as telas e recursos do sistema SmartNose.</p>
+          </div>
+          <div className="software-updates__controls" role="group" aria-label="Navegação das demonstrações">
+            <button type="button" onClick={() => moveUpdate(-1)} aria-label="Demonstração anterior"><ArrowLeft size={19} aria-hidden="true" /></button>
+            <button type="button" onClick={() => moveUpdate(1)} aria-label="Próxima demonstração"><ArrowRight size={19} aria-hidden="true" /></button>
+          </div>
+        </header>
+        <div className="software-demo__screen" aria-live="polite" aria-atomic="true">
+          <img key={update.image} src={update.image} alt={update.alt} />
+          <span className="software-demo__counter">{String(activeUpdate + 1).padStart(2, '0')} / {String(updates.length).padStart(2, '0')}</span>
+        </div>
+        <div className="software-updates__feature">
+          <div aria-live="polite" aria-atomic="true"><h3>{update.title}</h3><p>{update.description}</p></div>
+          <a href="#">{update.action}<ArrowRight size={16} aria-hidden="true" /></a>
+        </div>
+      </div>
     </section>
   )
 }
